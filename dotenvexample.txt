@@ -1,0 +1,6 @@
+MONGO_URI=<mongo connection string>
+
+JWT_USER_SECRET_KEY=<128 character long string>
+JWT_AGENT_SECRET_KEY=<128 character long string>
+
+CREATE_AGENT_SECRET_KEY=<32 character long string>
