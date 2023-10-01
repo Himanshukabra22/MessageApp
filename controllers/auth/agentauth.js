@@ -45,6 +45,12 @@ const Register = async (req, res) => {
     const agentData = db.collection("agentdata");
   
     const {name, username, password : plainTextPassword, email, key} = req.body;
+
+    let uniqueCheck = await agentData.find({username}).toArray();
+    if(uniqueCheck.length >= 1){
+      return res.status(400).send({ status: "not ok", msg: "user not created as username already exists." });
+    }
+
     if(key !== process.env.CREATE_AGENT_SECRET_KEY)
     {
       return res.status(400).send({ status: "not ok", msg: "user not created" });
