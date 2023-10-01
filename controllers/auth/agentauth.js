@@ -44,17 +44,18 @@ const Register = async (req, res) => {
     const db = dbclient.db('mydb');
     const agentData = db.collection("agentdata");
   
-    const {name, username, password : plainTextPassword, email, key} = req.body;
+    const {name, username, password : plainTextPassword, email} = req.body;
 
     let uniqueCheck = await agentData.find({username}).toArray();
     if(uniqueCheck.length >= 1){
       return res.status(400).send({ status: "not ok", msg: "user not created as username already exists." });
     }
 
-    if(key !== process.env.CREATE_AGENT_SECRET_KEY)
-    {
-      return res.status(400).send({ status: "not ok", msg: "user not created" });
-    }
+    // if(key !== process.env.CREATE_AGENT_SECRET_KEY)
+    // {
+    //   return res.status(400).send({ status: "not ok", msg: "user not created" });
+    // }
+
     const salt = bcrypt.genSaltSync(10);
     const password = bcrypt.hashSync(String(plainTextPassword), salt);
     const agent = await agentData.insertOne({name, username, password, email});
